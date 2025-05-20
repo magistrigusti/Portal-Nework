@@ -20,7 +20,7 @@ export const Login: React.FC<Props> = ({ setSelected }) => {
     const {
     handleSubmit,
     control,
-    // formState: { errors },
+    formState: { errors },
   } = useForm<Login>({
     mode: "onChange",
     reValidateMode: "onBlur",

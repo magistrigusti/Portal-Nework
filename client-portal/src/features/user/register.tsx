@@ -20,7 +20,7 @@ export const Register = ({ setSelected }:Props) => {
   const {
     handleSubmit,
     control,
-    // formState: { errors },
+    formState: { errors },
   } = useForm<Register>({
     mode: "onChange",
     reValidateMode: "onBlur",
