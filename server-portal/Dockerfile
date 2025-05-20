@@ -1,4 +1,3 @@
-# Используем образ линух Alpine 
 FROM node:22.14.0
 
 WORKDIR /app
@@ -7,13 +6,17 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
-
+# Устанавливаем Prisma глобально
 RUN npm install -g prisma
 
-RUN prisma generate
-
+# Копируем схему ПЕРЕД генерацией клиента!
 COPY prisma/schema.prisma ./prisma/
+
+# Генерируем Prisma Client внутри контейнера!
+RUN npx prisma generate
+
+# Копируем всё остальное
+COPY . .
 
 EXPOSE 3000
 

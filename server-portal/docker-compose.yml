@@ -1,15 +1,12 @@
 services:
   portal-server:
-    build: .
-    working_dir: /usr/src/app  
-    volumes:
-      - .:/usr/src/app         
+    build: .      
     ports:
       - '3000:3000'
     depends_on:
       - portal-db
-    environment:
-      - DATABASE_URL=mongodb://monty:pass@db:27017/mydb?authSource=admin&directConnection=true
+      - portal-app
+    # Лучше вообще убрать отсюда DATABASE_URL, если сервер сам берёт .env!
 
   portal-db:
     image: prismagraphql/mongo-single-replica:5.0.3
@@ -18,8 +15,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: monty
       MONGO_INITDB_ROOT_PASSWORD: pass
-  
-  portal-network:
+  portal-app:
     build: ../client-portal
     ports: 
       - '80:80'
