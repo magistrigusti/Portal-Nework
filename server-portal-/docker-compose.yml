@@ -1,0 +1,27 @@
+
+services:
+  portal-server:
+    build: .
+    working_dir: /usr/src/app  
+    volumes:
+      - .:/usr/src/app         
+    ports:
+      - '3000:3000'
+    depends_on:
+      - portal-db
+      - portal-network
+    environment:
+      - DATABASE_URL=mongodb://monty:pass@db:27017/mydb?authSource=admin&directConnection=true
+
+  portal-db:
+    image: prismagraphql/mongo-single-replica:5.0.3
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: monty
+      MONGO_INITDB_ROOT_PASSWORD: pass
+  
+  portal-network:
+    build: ../portal-client
+    ports: 
+      - '80:80'
