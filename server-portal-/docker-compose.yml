@@ -1,6 +1,6 @@
 
 services:
-  portal-server:
+  server-portal-:
     build: .
     working_dir: /usr/src/app  
     volumes:
@@ -9,7 +9,7 @@ services:
       - '3000:3000'
     depends_on:
       - portal-db
-      - portal-network
+      - server-portal-
     environment:
       - DATABASE_URL=mongodb://monty:pass@db:27017/mydb?authSource=admin&directConnection=true
 
@@ -22,6 +22,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: pass
   
   portal-network:
-    build: ../portal-client
+    build: ../client-portal-
     ports: 
       - '80:80'
