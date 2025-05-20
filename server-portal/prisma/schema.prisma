@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
+model User {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   email       String    @unique
   password    String
@@ -23,20 +23,22 @@ model users {
   comments    Comment[]
   followers   Follows[] @relation("following")
   following   Follows[] @relation("follower")
+
+   @@map("users")
 }
 
 model Follows {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  follower    users   @relation("follower", fields: [followerId], references: [id])
+  follower    User   @relation("follower", fields: [followerId], references: [id])
   followerId  String @db.ObjectId
-  following   users   @relation("following", fields: [followingId], references: [id])
+  following   User   @relation("following", fields: [followingId], references: [id])
   followingId String @db.ObjectId
 }
 
 model Post {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   content   String
-  author    users     @relation(fields: [authorId], references: [id])
+  author    User      @relation(fields: [authorId], references: [id])
   authorId  String    @db.ObjectId
   likes     Like[]
   comments  Comment[]
@@ -45,7 +47,7 @@ model Post {
 
 model Like {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  user   users   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
   userId String @db.ObjectId
   post   Post   @relation(fields: [postId], references: [id])
   postId String @db.ObjectId
@@ -54,7 +56,7 @@ model Like {
 model Comment {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   content String
-  user    users   @relation(fields: [userId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
   userId  String @db.ObjectId
   post    Post   @relation(fields: [postId], references: [id])
   postId  String @db.ObjectId
