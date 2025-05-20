@@ -11,7 +11,14 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://portalnetwork.netlify.app', // твой фронтовый домен
+    'http://localhost:3000',             // для разработки
+  ],
+  credentials: true, // если используешь куки/авторизацию
+}));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,7 +39,6 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-// 📁 app.js — строка 41
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
